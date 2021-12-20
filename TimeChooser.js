@@ -1,16 +1,33 @@
 import React, { Component } from "react";
 import { Text, View, Button } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class TimeChooser extends Component {
     state = { date: new Date(1598051730000),
             mode:  'time',
-            show: false};
+            show: false,
+            timeFromStorage: new Date(0)
+        };
+
+    saveTime = async (time) => {
+        try {
+            await AsyncStorage.setItem(this.props.name, time.toString());
+            const value = await AsyncStorage.getItem(this.props.name);
+            if(value != null){
+                this.setState({timeFromStorage: new Date(value)});
+            }
+        }
+        catch (e) {
+            console.log("erreur saveTime " + e);
+        }
+    };
 
     onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         this.setState({show: Platform.OS === 'ios'});
         this.setState({date: currentDate});
+        this.saveTime(this.state.date);
         };
 
     showMode = (currentMode) => {

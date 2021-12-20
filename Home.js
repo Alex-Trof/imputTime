@@ -1,20 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import TimeChooser from './TimeChooser';
 
-const Home = () => {      
+const Home = () => {    
         return (
             <View style={styles.container}>
                 <Text>Matin</Text>
                 <View style={styles.row}>
-                    <TimeChooser title="Set Arrival"/>
-                    <TimeChooser title="Set Departure"/>
+                    <TimeChooser title="Arrivée" name="MatinArrivée"/>
+                    <TimeChooser title="Départ" name="MatinDépart"/>
                 </View>
 
                 <Text>Après-midi</Text>
                 <View style={styles.row}>
-                    <TimeChooser title="Set Arrival"/>
-                    <TimeChooser title="Set Departure"/>
+                    <TimeChooser title="Arrivée" name="AprèsMidiArrivée"/>
+                    <TimeChooser title="Départ" name="AprèsMidiDépart"/>
                 </View>
             </View>
         )
