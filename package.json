@@ -10,6 +10,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-native-fontawesome": "^0.2.7",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/datetimepicker": "3.5.2",
     "expo": "~43.0.2",
@@ -17,10 +20,26 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-svg": "^12.1.1",
+    "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "^8.5.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.27.1"
   },
-  "private": true
+  "private": true,
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-Trof/imputTime.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex-Trof/imputTime/issues"
+  },
+  "homepage": "https://github.com/Alex-Trof/imputTime#readme"
 }
