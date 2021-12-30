@@ -3,67 +3,67 @@ import {Button, StyleSheet, Text, View} from 'react-native';
 import TimeChooser from './TimeChooser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Ionicons} from '@expo/vector-icons';
+import { Component } from 'react/cjs/react.production.min';
 
-const Home = () => {
-  const [timeTotal, upTimeTotal] = useState('');
-  const [timeMA, upTimeMA] = useState('');
-  const [isTime, upIsTime] = useState(true);
-  const [hoursNames, upHoursNames] = useState({MatinDépart: 'MatinDépart',
-  MatinArrivée: 'MatinArrivée',
-  AprèsMidiDépart: 'AprèsMidiDépart',
-  AprèsMidiArrivée: 'AprèsMidiArrivée'});
+class Home extends Component {
+  state = {
+    hoursNames: {MatinDépart: 'MatinDépart',
+    MatinArrivée: 'MatinArrivée',
+    AprèsMidiDépart: 'AprèsMidiDépart',
+    AprèsMidiArrivée: 'AprèsMidiArrivée'}
+  };
 
-  function calculateTotal() {
-    Object.keys(hoursNames).forEach(async (x) => {
+  async calculateTotal() {
+    Object.keys(this.state.hoursNames).forEach(async (x) => {
       const time = await AsyncStorage.getItem(x);
       console.log(time);
     });
   }
 
-  function reset() {
-    Object.keys(hoursNames).forEach(async (x) => {
+  async reset() {
+    Object.keys(this.state.hoursNames).forEach(async (x) => {
       const time = await AsyncStorage.removeItem(x);
     });
+    console.log("reseting")
   }
 
-  async function isTimeTotal() {
+  render() {
     let res = true;
-    Object.keys(hoursNames).forEach(async (x) => {
+    Object.keys(this.state.hoursNames).forEach(async (x) => {
       const time = await AsyncStorage.getItem(x);
       if(time == null){
         res = false;
       }
-      console.log(time, isTime);
+      console.log("new res: " + res);
     });
-    upIsTime(res);
-    console.log("res " + isTime);
-    return isTime;
-  }
 
-  return (
-    <View style={styles.container}>
-      <Text>Matin</Text>
-      <View style={styles.row}>
-        <TimeChooser title="Arrivée" name={hoursNames.MatinArrivée}/>
-        <TimeChooser title="Départ" name={hoursNames.MatinDépart}/>
+    return (
+      <View style={styles.container}>
+        <Text>Matin</Text>
+        <View style={styles.row}>
+          <TimeChooser title="Arrivée" name={this.state.hoursNames.MatinArrivée}/>
+          <TimeChooser title="Départ" name={this.state.hoursNames.MatinDépart}/>
+        </View>
+        <Text>Après-midi</Text>
+        <View style={styles.row}>
+          <TimeChooser title="Arrivée" name={this.state.hoursNames.AprèsMidiArrivée}/>
+          <TimeChooser title="Départ" name={this.state.hoursNames.AprèsMidiDépart}/>
+        </View>
+        {/* <View style={styles.row}>
+          <Button title="Calculate Time" onPress={this.calculateTotal} disabled={res}>
+            <Ionicons name="md-checkmark-circle" size={32} color="green" />
+          </Button>
+        </View> */}
+        <View style={styles.row}>
+          <Button title="Reset" onPress={this.reset.bind(this)}>
+            <Ionicons name="md-checkmark-circle" size={32} color="green" />
+          </Button>
+        </View>
       </View>
-      <Text>Après-midi</Text>
-      <View style={styles.row}>
-        <TimeChooser title="Arrivée" name={hoursNames.AprèsMidiArrivée}/>
-        <TimeChooser title="Départ" name={hoursNames.AprèsMidiDépart}/>
-      </View>
-      <View style={styles.row}>
-        <Button title="Calculate Time" onPress={calculateTotal} disabled={isTimeTotal() ? true : false}>
-          <Ionicons name="md-checkmark-circle" size={32} color="green" />
-        </Button>
-      </View>
-      <View style={styles.row}>
-        <Button title="Reset" onPress={reset}>
-          <Ionicons name="md-checkmark-circle" size={32} color="green" />
-        </Button>
-      </View>
-    </View>
-  );
+    );
+  };
+
+  
 };
 
 const styles = StyleSheet.create({
