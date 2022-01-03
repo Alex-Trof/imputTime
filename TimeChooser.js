@@ -8,11 +8,15 @@ class TimeChooser extends Component {
   state = {date: new Date(0),
     mode: 'time',
     show: false,
-    timeFromStorage: new Date(AsyncStorage.getItem(this.props.name)),
+    timeFromStorage: new Date(this.getTime()),
   };
 
+  async getTime() {
+    return await AsyncStorage.getItem(this.props.name)
+  }
+
   shouldComponentUpdate(nProps, nState) {
-    console.log(nState != this.state ? true : false);
+    //console.log(nState != this.state ? true : false);
     return nState != this.state ? true : false
   }
 
@@ -33,6 +37,7 @@ class TimeChooser extends Component {
     this.setState({show: Platform.OS === 'ios'});
     this.setState({date: currentDate});
     this.saveTime(this.state.date);
+    //calculateTime()
   };
 
   showMode = (currentMode) => {
@@ -43,25 +48,25 @@ class TimeChooser extends Component {
   showTimepicker = () => {
     this.showMode('time');
   };
-
+  
   render() {
     return (
-      <View>
-        {this.state.show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={this.state.date}
-            mode={this.state.mode}
-            onChange={this.onChange}
-            is24Hour={true}
-            display="default"/>
-        )}
         <View>
-          <Button onPress={this.showTimepicker} title={this.props.title} />
-          <Text>{this.state.timeFromStorage.getHours().toString()}
-          :{this.state.timeFromStorage.getMinutes().toString()}</Text>
+          {this.state.show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={this.state.date}
+              mode={this.state.mode}
+              onChange={this.onChange}
+              is24Hour={true}
+              display="default"/>
+          )}
+          <View>
+            <Button onPress={this.showTimepicker} title={this.props.title} />
+            <Text>{this.state.timeFromStorage.getHours().toString()}
+            :{this.state.timeFromStorage.getMinutes().toString()}</Text>
+          </View>
         </View>
-      </View>
     );
   }
 }

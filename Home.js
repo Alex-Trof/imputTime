@@ -1,17 +1,22 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import TimeChooser from './TimeChooser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Ionicons} from '@expo/vector-icons';
 import { Component } from 'react/cjs/react.production.min';
+import calculateTime from './CalculateTime';
 
 class Home extends Component {
   state = {
-    hoursNames: {MatinDépart: 'MatinDépart',
-    MatinArrivée: 'MatinArrivée',
-    AprèsMidiDépart: 'AprèsMidiDépart',
-    AprèsMidiArrivée: 'AprèsMidiArrivée'}
+    hoursNames: {MatinDépart: this.today() + ' MatinDépart',
+    MatinArrivée: this.today() + ' MatinArrivée',
+    AprèsMidiDépart: this.today() + ' AprèsMidiDépart',
+    AprèsMidiArrivée: this.today() + ' AprèsMidiArrivée'}
   };
+
+  today() {
+    return new Date().getDate() + '/' + new Date().getMonth()+1 + '/' + new Date().getFullYear()
+  }
 
   async calculateTotal() {
     Object.keys(this.state.hoursNames).forEach(async (x) => {
@@ -21,10 +26,12 @@ class Home extends Component {
   }
 
   async reset() {
-    Object.keys(this.state.hoursNames).forEach(async (x) => {
-      const time = await AsyncStorage.removeItem(x);
-    });
+    await AsyncStorage.clear()
     console.log("reseting")
+  }
+
+  handlePress() {
+    console.log("heheh")
   }
 
   render() {
@@ -34,16 +41,18 @@ class Home extends Component {
       if(time == null){
         res = false;
       }
-      console.log("new res: " + res);
+      //console.log("new res: " + res);
     });
 
     return (
       <View style={styles.container}>
         <Text>Matin</Text>
-        <View style={styles.row}>
-          <TimeChooser title="Arrivée" name={this.state.hoursNames.MatinArrivée}/>
-          <TimeChooser title="Départ" name={this.state.hoursNames.MatinDépart}/>
-        </View>
+        <TouchableOpacity style={styles.row} onPress={() => {console.log("hthththt")}}>
+          <View style={styles.row}>
+            <TimeChooser title="Arrivée" name={this.state.hoursNames.MatinArrivée}/>
+            <TimeChooser title="Départ" name={this.state.hoursNames.MatinDépart}/>
+          </View>
+        </TouchableOpacity>
         <Text>Après-midi</Text>
         <View style={styles.row}>
           <TimeChooser title="Arrivée" name={this.state.hoursNames.AprèsMidiArrivée}/>
