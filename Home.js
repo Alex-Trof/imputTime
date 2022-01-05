@@ -4,7 +4,6 @@ import TimeChooser from './TimeChooser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Ionicons} from '@expo/vector-icons';
 import { Component } from 'react/cjs/react.production.min';
-import calculateTime from './CalculateTime';
 
 class Home extends Component {
   state = {
@@ -30,10 +29,6 @@ class Home extends Component {
     console.log("reseting")
   }
 
-  handlePress() {
-    console.log("heheh")
-  }
-
   render() {
     let res = true;
     Object.keys(this.state.hoursNames).forEach(async (x) => {
@@ -41,28 +36,20 @@ class Home extends Component {
       if(time == null){
         res = false;
       }
-      //console.log("new res: " + res);
     });
 
     return (
       <View style={styles.container}>
         <Text>Matin</Text>
-        <TouchableOpacity style={styles.row} onPress={() => {console.log("hthththt")}}>
-          <View style={styles.row}>
-            <TimeChooser title="Arrivée" name={this.state.hoursNames.MatinArrivée}/>
-            <TimeChooser title="Départ" name={this.state.hoursNames.MatinDépart}/>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.row}>
+          <TimeChooser title="Arrivée" keys={this.state.hoursNames} name={this.state.hoursNames.MatinArrivée}/>
+          <TimeChooser title="Départ" keys={this.state.hoursNames} name={this.state.hoursNames.MatinDépart}/>
+        </View>
         <Text>Après-midi</Text>
         <View style={styles.row}>
-          <TimeChooser title="Arrivée" name={this.state.hoursNames.AprèsMidiArrivée}/>
-          <TimeChooser title="Départ" name={this.state.hoursNames.AprèsMidiDépart}/>
+          <TimeChooser title="Arrivée" keys={this.state.hoursNames} name={this.state.hoursNames.AprèsMidiArrivée}/>
+          <TimeChooser title="Départ" keys={this.state.hoursNames} name={this.state.hoursNames.AprèsMidiDépart}/>
         </View>
-        {/* <View style={styles.row}>
-          <Button title="Calculate Time" onPress={this.calculateTotal} disabled={res}>
-            <Ionicons name="md-checkmark-circle" size={32} color="green" />
-          </Button>
-        </View> */}
         <View style={styles.row}>
           <Button title="Reset" onPress={this.reset.bind(this)}>
             <Ionicons name="md-checkmark-circle" size={32} color="green" />

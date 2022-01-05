@@ -37,7 +37,7 @@ class TimeChooser extends Component {
     this.setState({show: Platform.OS === 'ios'});
     this.setState({date: currentDate});
     this.saveTime(this.state.date);
-    //calculateTime()
+    calculateTime(this.props.keys)
   };
 
   showMode = (currentMode) => {
