@@ -17,13 +17,6 @@ class Home extends Component {
     return new Date().getDate() + '/' + new Date().getMonth()+1 + '/' + new Date().getFullYear()
   }
 
-  async calculateTotal() {
-    Object.keys(this.state.hoursNames).forEach(async (x) => {
-      const time = await AsyncStorage.getItem(x);
-      console.log(time);
-    });
-  }
-
   async reset() {
     await AsyncStorage.clear()
     console.log("reseting")
@@ -42,13 +35,13 @@ class Home extends Component {
       <View style={styles.container}>
         <Text>Matin</Text>
         <View style={styles.row}>
-          <TimeChooser title="Arrivée" keys={this.state.hoursNames} name={this.state.hoursNames.MatinArrivée}/>
-          <TimeChooser title="Départ" keys={this.state.hoursNames} name={this.state.hoursNames.MatinDépart}/>
+          <TimeChooser title="Arrivée" today={this.today()} keys={this.state.hoursNames} name={this.state.hoursNames.MatinArrivée}/>
+          <TimeChooser title="Départ" today={this.today()} keys={this.state.hoursNames} name={this.state.hoursNames.MatinDépart}/>
         </View>
         <Text>Après-midi</Text>
         <View style={styles.row}>
-          <TimeChooser title="Arrivée" keys={this.state.hoursNames} name={this.state.hoursNames.AprèsMidiArrivée}/>
-          <TimeChooser title="Départ" keys={this.state.hoursNames} name={this.state.hoursNames.AprèsMidiDépart}/>
+          <TimeChooser title="Arrivée" today={this.today()} keys={this.state.hoursNames} name={this.state.hoursNames.AprèsMidiArrivée}/>
+          <TimeChooser title="Départ" today={this.today()} keys={this.state.hoursNames} name={this.state.hoursNames.AprèsMidiDépart}/>
         </View>
         <View style={styles.row}>
           <Button title="Reset" onPress={this.reset.bind(this)}>
