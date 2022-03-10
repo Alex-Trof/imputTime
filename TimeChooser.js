@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import isAllTimes from './CalculateTime';
+import {isAllTimes, toFormatDate} from './CalculateTime';
 
 class TimeChooser extends Component {
   state = {date: new Date(0),
@@ -19,6 +19,13 @@ class TimeChooser extends Component {
   }
 
   componentDidMount() {
+    this.getTime()
+    .then(x => {
+      this.setState({timeFromStorage: new Date(x)})
+    })
+  }
+
+  async updateTime() {
     this.getTime()
     .then(x => {
       this.setState({timeFromStorage: new Date(x)})
@@ -49,7 +56,8 @@ class TimeChooser extends Component {
     isAllTimes(this.props.keys)
     .then(x => {
       if(x == true) {
-        this.calculateTimeTotal()
+        this.props.updateTimeOkHandler()
+        //this.calculateTimeTotal()
       }
     })
   };
@@ -63,19 +71,34 @@ class TimeChooser extends Component {
       AsyncStorage.getItem(this.props.today + ' MatinArrivée')
       .then(matinA => {
         diffMatin = (new Date(matinD).getTime() - new Date(matinA).getTime()) / (1000 * 60 * 60)
-        console.log(diffMatin)
+
+        AsyncStorage.getItem(this.props.today + ' AprèsMidiDépart')
+        .then(apremD => {
+          AsyncStorage.getItem(this.props.today + ' AprèsMidiArrivée')
+          .then(apremA => {
+            diffAprem = (new Date(apremD).getTime() - new Date(apremA).getTime()) / (1000 * 60 * 60)
+            const totalHour = diffAprem + diffMatin - 7.5
+
+            if(totalHour != 0){
+              const date = new Date()
+              date.setDate(date.getDate()-1)
+              const yesterday = toFormatDate(date)
+
+              AsyncStorage.getItem('Temps Total ' + yesterday)
+              .then(yesterdayTime => {
+                if(yesterdayTime != null) {
+                  const updateTime = parseFloat(yesterdayTime) + totalHour
+                  AsyncStorage.setItem('Temps Total ' + this.props.today, updateTime.toString())
+                }
+                else {
+                  AsyncStorage.setItem('Temps Total ' + this.props.today, totalHour.toString())
+                }
+              })
+            }
+          })
+        })
       })
-    })
-    
-    AsyncStorage.getItem(this.props.today + ' AprèsMidiDépart')
-    .then(apremD => {
-      AsyncStorage.getItem(this.props.today + ' AprèsMidiArrivée')
-      .then(apremA => {
-        diffAprem = (new Date(apremD).getTime() - new Date(apremA).getTime()) / (1000 * 60 * 60)
-        console.log(diffAprem)
-      })
-    })
-    
+    })  
   };
 
   showMode = (currentMode) => {

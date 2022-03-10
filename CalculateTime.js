@@ -21,4 +21,12 @@ async function isAllTimes(hoursNames) {
     })
 }
 
-export default isAllTimes;
+function toFormatDate(date){
+    console.log("date month: " + date.getMonth()+1)
+    return date.getDate() + '/' + date.getMonth()+1 + '/' + date.getFullYear()
+}
+
+export {
+    isAllTimes,
+    toFormatDate,
+}
