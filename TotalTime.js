@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Component } from 'react/cjs/react.production.min';
-import {toFormatDate} from './CalculateTime';
+import {toFormatDate} from './TimeHelper';
 import { Text, View } from 'react-native';
 
 class TotalTime extends Component {
@@ -19,8 +19,9 @@ class TotalTime extends Component {
     }
 
     today() {
-        return new Date().getDate() + '/' + new Date().getMonth()+1 + '/' + new Date().getFullYear()
-    }
+        const date = toFormatDate(new Date())
+        return date
+      }
 
     updateTime() {
         AsyncStorage.getItem('Temps Total ' + this.today())

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {isAllTimes, toFormatDate} from './CalculateTime';
+import {isAllTimes, toFormatDate} from './TimeHelper';
 
 class TimeChooser extends Component {
   state = {date: new Date(0),

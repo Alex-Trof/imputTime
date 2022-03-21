@@ -4,7 +4,7 @@ import TimeChooser from './TimeChooser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IconButton, Colors } from 'react-native-paper';
 import TotalTime from './TotalTime';
-import {toFormatDate} from './CalculateTime';
+import {toFormatDate} from './TimeHelper';
 
 class Home extends Component {
   state = {
@@ -16,7 +16,8 @@ class Home extends Component {
   };
 
   today() {
-    return new Date().getDate() + '/' + new Date().getMonth()+1 + '/' + new Date().getFullYear()
+    const date = toFormatDate(new Date())
+    return date
   }
 
   async reset() {
@@ -33,11 +34,11 @@ class Home extends Component {
     .then(x => {
       console.log(x)
     })
-    AsyncStorage.getItem("Temps Total 22/11/2022")
+    AsyncStorage.getItem("Temps Total 21/3/2022")
     .then(y => {
       console.log(y)
     })
-    AsyncStorage.getItem("Temps Total 23/11/2022")
+    AsyncStorage.getItem("Temps Total 20/3/2022")
     .then(y => {
       console.log(y)
     })
@@ -60,26 +61,25 @@ class Home extends Component {
             diffAprem = (new Date(apremD).getTime() - new Date(apremA).getTime()) / (1000 * 60 * 60)
             const totalHour = diffAprem + diffMatin - 7.5
 
-            if(totalHour != 0){
-              const date = new Date()
-              date.setDate(date.getDate()-1)
-              const yesterday = toFormatDate(date)
+            const date = new Date()
+            date.setDate(date.getDate()-1)
+            const yesterday = toFormatDate(date)
+            const dateToday = this.today()
 
-              AsyncStorage.getItem('Temps Total ' + yesterday)
-              .then(yesterdayTime => {
-                if(yesterdayTime != null) {
-                  const updateTime = parseFloat(yesterdayTime) + totalHour
-                  AsyncStorage.setItem('Temps Total ' + this.today(), updateTime.toString())
-                }
-                else {
-                  AsyncStorage.setItem('Temps Total ' + this.today(), totalHour.toString())
-                }
-              })
-            }
+            AsyncStorage.getItem('Temps Total ' + yesterday)
+            .then(yesterdayTime => {
+              if(yesterdayTime != null) {
+                const updateTime = parseFloat(yesterdayTime) + totalHour
+                AsyncStorage.setItem('Temps Total ' + dateToday, updateTime.toString())
+              }
+              else {
+                AsyncStorage.setItem('Temps Total ' + dateToday, totalHour.toString())
+              }
+            })
           })
         })
       })
-    })  
+    }) 
   };
 
   render() {
